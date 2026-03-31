@@ -3,10 +3,33 @@ services:
     build:
       context: .
       dockerfile: apps/reservations/Dockerfile
+      target: development
     env_file:
       - .env
+    environment:
+      MYSQL_HOST: mysql
     ports:
       - '3000:3000'
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on:
+      - mysql
+
+  auth:
+    build:
+      context: .
+      dockerfile: apps/auth/Dockerfile
+      target: development
+    env_file:
+      - .env
+    environment:
+      MYSQL_HOST: mysql
+    ports:
+      - '3001:3001'
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
     depends_on:
       - mysql
 
